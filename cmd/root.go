@@ -13,7 +13,7 @@ var rootCmd = &cobra.Command{
 
 func init() {
 	reportCmd.Flags().String("org-name", "", "The name of the GitHub organization")
-	reportCmd.Flags().StringArray("runner-labels", []string{}, "The labels that you use for your jobs (can be both user defined and GitHub defined)")
+	reportCmd.Flags().StringSlice("runner-labels", []string{}, "The labels that you use for your jobs (can be both user defined and GitHub defined) separated by commas")
 	reportCmd.Flags().Int("num-workflow-runs-to-evaluate", 1, "The number of workflow runs to evaluate for a workflow")
 	err := reportCmd.MarkFlagRequired("org-name")
 	if err != nil {

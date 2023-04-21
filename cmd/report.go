@@ -18,7 +18,7 @@ var reportCmd = &cobra.Command{
 		if err != nil {
 			log.Fatalf("Error getting org name: %v", err)
 		}
-		runnerLabels, err := cmd.Flags().GetStringArray("runner-labels")
+		runnerLabels, err := cmd.Flags().GetStringSlice("runner-labels")
 		fmt.Println("Labels we are searching for in workflows: ", runnerLabels)
 		if err != nil {
 			log.Fatalf("Error getting self-hosted labels: %v", err)

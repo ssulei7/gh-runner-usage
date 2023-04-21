@@ -52,7 +52,7 @@ func (r *Repository) GetRepoWorkflows() []string {
 	}
 
 	// Log workflow_paths
-	fmt.Println("Workflows for repository: ", r.FullName, " are: ", workflow_paths)
+	fmt.Println("Workflows for repository ", r.FullName, " are: ", workflow_paths)
 
 	return workflow_paths
 
