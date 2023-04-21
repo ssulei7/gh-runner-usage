@@ -30,7 +30,7 @@ func CreateInitialReportCSVFile(orgName string) {
 
 func AddRecordToCSVFile(orgName string, repoName string, workflowName string, averageSelfHostedMinutes float64) {
 	// Open the csv file
-	file, err := os.OpenFile(orgName+"-self-hosted-minute-average-report.csv", os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+	file, err := os.OpenFile(orgName+"-runner-minute-average-report.csv", os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 	if err != nil {
 		panic(err)
 	}

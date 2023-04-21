@@ -48,9 +48,11 @@ func (r *Repository) GetRepoWorkflows() []string {
 		workflow := workflow.(map[string]interface{})
 		// Remove the .github/workflows/ from the path
 		workflow_name := strings.Replace(workflow["path"].(string), ".github/workflows/", "", 1)
-		fmt.Println(workflow_name)
 		workflow_paths = append(workflow_paths, workflow_name)
 	}
+
+	// Log workflow_paths
+	fmt.Println("Workflows for repository: ", r.FullName, " are: ", workflow_paths)
 
 	return workflow_paths
 
@@ -110,8 +112,8 @@ func GetOrgRepositories(orgName string) Repositories {
 	repositories := Repositories{}
 	currentPage := 1
 	noNextPage := false
+	fmt.Println("Getting repositories for organization: ", orgName)
 	for !noNextPage {
-		fmt.Println("Current page: " + fmt.Sprint(currentPage))
 		response, err := client.Request(http.MethodGet, fmt.Sprintf("orgs/%s/repos?per_page=1000&page=%d", orgName, currentPage), nil)
 		if err != nil {
 			log.Fatal(err)
