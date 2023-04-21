@@ -16,13 +16,13 @@ To use the extension, you can run the following command:
 Generate a report of the usage of GitHub Actions self-hosted runners across an organization
 
 Usage:
-  gh-self-hosted-usage-check report [flags]
+  gh runner-usage-check report [flags]
 
 Flags:
   -h, --help                                help for report
       --num-workflow-runs-to-evaluate int   The number of workflow runs to evaluate for a workflow (default 1)
       --org-name string                     The name of the GitHub organization
-      --runner-labels strings               The labels that you use for your jobs (can be both user defined and GitHub defined)
+      --runner-labels strings               The labels that you use for your jobs (can be both user defined and GitHub defined) comma separated.
 ```
 
 ## Example output
