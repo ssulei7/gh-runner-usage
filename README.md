@@ -22,7 +22,7 @@ Flags:
   -h, --help                                help for report
       --num-workflow-runs-to-evaluate int   The number of workflow runs to evaluate for a workflow (default 1)
       --org-name string                     The name of the GitHub organization
-      --runner-labels strings               The labels that you use for your jobs (can be both user defined and GitHub defined)
+      --runner-labels strings               The labels that you use for your jobs (can be both user defined and GitHub defined) comma separated.
 ```
 
 ## Example output
