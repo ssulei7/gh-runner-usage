@@ -16,7 +16,7 @@ To use the extension, you can run the following command:
 Generate a report of the usage of GitHub Actions self-hosted runners across an organization
 
 Usage:
-  gh-self-hosted-usage-check report [flags]
+  gh runner-usage-check report [flags]
 
 Flags:
   -h, --help                                help for report
