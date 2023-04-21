@@ -7,7 +7,7 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "gh-self-hosted-usage-check",
+	Use:   "gh-runner-usage-check",
 	Short: "A CLI tool to check the usage of GitHub Actions self-hosted runners",
 }
 
