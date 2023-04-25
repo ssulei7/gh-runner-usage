@@ -1,5 +1,8 @@
-/gh-self-hosted-usage-check
-/gh-self-hosted-usage-check.exe
+/gh-runner-usage-check
+/gh-runner-usage-check.exe
 
 # Ignore .vscode
 .vscode
+
+# Ignore Go coverage reports
+cover.out
