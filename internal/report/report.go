@@ -3,7 +3,6 @@ package report
 import (
 	"encoding/csv"
 	"encoding/json"
-	"fmt"
 	"os"
 	"strconv"
 )
@@ -98,9 +97,6 @@ func AddRecordToJSONFile(orgName string, repoName string, workflowName string, a
 	if err != nil {
 		panic(err)
 	}
-
-	// Print the records array
-	fmt.Println(records)
 
 	// Create a new record
 	record := map[string]string{
