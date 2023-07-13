@@ -2,9 +2,21 @@ package report
 
 import (
 	"encoding/csv"
+	"encoding/json"
+	"fmt"
 	"os"
 	"strconv"
 )
+
+type JSONRecordArray []map[string]string
+
+func CreateInitialOutputFile(outputType string, orgName string) {
+	if outputType == "csv" {
+		CreateInitialReportCSVFile(orgName)
+	} else if outputType == "json" {
+		CreateInitialJSONFile(orgName)
+	}
+}
 
 func CreateInitialReportCSVFile(orgName string) {
 	// Create a new csv file
@@ -28,6 +40,27 @@ func CreateInitialReportCSVFile(orgName string) {
 	writer.Flush()
 }
 
+func CreateInitialJSONFile(orgName string) {
+	// Create a new json file
+	file, err := os.Create(orgName + "-runner-minute-average-report.json")
+	if err != nil {
+		panic(err)
+	}
+
+	defer file.Close()
+
+	// Write opening bracket and closing bracket to the json file
+	file.WriteString("[\n]")
+}
+
+func AddRecord(outputType string, orgName string, repoName string, workflowName string, averageSelfHostedMinutes float64) {
+	if outputType == "csv" {
+		AddRecordToCSVFile(orgName, repoName, workflowName, averageSelfHostedMinutes)
+	} else if outputType == "json" {
+		AddRecordToJSONFile(orgName, repoName, workflowName, averageSelfHostedMinutes)
+	}
+}
+
 func AddRecordToCSVFile(orgName string, repoName string, workflowName string, averageSelfHostedMinutes float64) {
 	// Open the csv file
 	file, err := os.OpenFile(orgName+"-runner-minute-average-report.csv", os.O_APPEND|os.O_WRONLY, os.ModeAppend)
@@ -48,4 +81,46 @@ func AddRecordToCSVFile(orgName string, repoName string, workflowName string, av
 
 	// Flush the csv writer to write any buffered data to the file
 	writer.Flush()
+}
+
+func AddRecordToJSONFile(orgName string, repoName string, workflowName string, averageSelfHostedMinutes float64) {
+	// Load JSON file as an array of struct
+	var records JSONRecordArray
+
+	// Open the json file
+	file, err := os.ReadFile(orgName + "-runner-minute-average-report.json")
+	if err != nil {
+		panic(err)
+	}
+
+	// Unmarshal the json file into the records array using json.Unmarshal
+	err = json.Unmarshal(file, &records)
+	if err != nil {
+		panic(err)
+	}
+
+	// Print the records array
+	fmt.Println(records)
+
+	// Create a new record
+	record := map[string]string{
+		"Repository":             repoName,
+		"Workflow":               workflowName,
+		"Average Runner Minutes": strconv.FormatFloat(averageSelfHostedMinutes, 'f', 2, 64),
+	}
+
+	// Append the new record to the records array
+	records = append(records, record)
+
+	// Marshal the records array into a json string
+	jsonString, err := json.MarshalIndent(records, "", "  ")
+	if err != nil {
+		panic(err)
+	}
+
+	// Write the json string to the json file
+	err = os.WriteFile(orgName+"-runner-minute-average-report.json", jsonString, 0644)
+	if err != nil {
+		panic(err)
+	}
 }
