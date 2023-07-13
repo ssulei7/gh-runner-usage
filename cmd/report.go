@@ -28,8 +28,12 @@ var reportCmd = &cobra.Command{
 			log.Fatalf("Error getting number of workflow runs to evaluate: %v", err)
 		}
 
-		// Create the report CSV file
-		report.CreateInitialReportCSVFile(orgName)
+		outputType, err := cmd.Flags().GetString("output-type")
+		if err != nil {
+			log.Fatalf("Error getting output type: %v", err)
+		}
+
+		report.CreateInitialOutputFile(outputType, orgName)
 
 		// Get repositories in the organization
 		repositories := repository.GetOrgRepositories(orgName)
@@ -90,8 +94,8 @@ var reportCmd = &cobra.Command{
 					}
 				}
 
-				// Write as a row in a CSV file
-				report.AddRecordToCSVFile(orgName, repo.FullName, workflow, total/float64(numberOfWorkflowRunsToEvaluate))
+				// Write a new record to the output file
+				report.AddRecord(outputType, orgName, repo.FullName, workflow, total/float64(numberOfWorkflowRunsToEvaluate))
 			}
 		}
 	},
