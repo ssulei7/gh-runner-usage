@@ -27,7 +27,7 @@ change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 version-resolver:
   major:
     labels:
-      - 'type: breaking'
+      - 'type: feature'
   minor:
     labels:
       - 'type: enhancement'
