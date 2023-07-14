@@ -1,0 +1,16 @@
+name: Test CLI Code
+
+on:
+    pull_request:
+        branches:
+            - main
+jobs:
+    test:
+        name: Test CLI Code
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Test Go code and generate coverage report
+              run: |
+                go test ./... --coverprofile=coverage.out
