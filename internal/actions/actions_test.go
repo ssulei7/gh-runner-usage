@@ -21,7 +21,7 @@ func TestCalculateTotalMinutesForJob(t *testing.T) {
 		StartedAt:   time.Date(2021, 1, 1, 0, 10, 0, 0, time.UTC),
 		CompletedAt: time.Date(2021, 1, 1, 0, 0, 0, 0, time.UTC),
 	}
-	expected2 := -10.0
+	expected2 := 0.0
 	if actual := j2.CalculateTotalMinutesForJob(); actual != expected2 {
 		t.Errorf("Test case 2 failed: expected %v but got %v", expected2, actual)
 	}
