@@ -1,11 +1,5 @@
----
 name-template: 'v$RESOLVED_VERSION'
 tag-template: 'v$RESOLVED_VERSION'
-template: |
-  # Changelog
-  $CHANGES
-
-  See details of [all code changes](https://github.com/github/super-linter/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION) since previous release
 categories:
   - title: '🚀 Features'
     labels:
@@ -17,24 +11,21 @@ categories:
       - 'bugfix'
       - 'bug'
   - title: '🧰 Maintenance'
-    labels:
-      - 'infrastructure'
-      - 'automation'
-      - 'documentation'
-  - title: '🏎 Performance'
-    label: 'performance'
+    label: 'chore'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 version-resolver:
   major:
     labels:
-      - 'type: feature'
+      - 'major'
   minor:
     labels:
-      - 'type: enhancement'
-      - 'type: automation'
+      - 'minor'
   patch:
     labels:
-      - 'type: bug'
-      - 'type: maintenance'
-      - 'type: documentation'
+      - 'patch'
   default: patch
+template: |
+  ## Changes
+
+  $CHANGES`
