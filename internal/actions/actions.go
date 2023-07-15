@@ -267,10 +267,18 @@ type Job struct {
 
 type Jobs []Job
 
+// CalculateTotalMinutesForJob calculates the total number of minutes that a job took to complete.
+// It returns the total number of minutes as a float64 value, rounded to three decimal places.
 func (j *Job) CalculateTotalMinutesForJob() float64 {
+	// Check if job actually completed... if not, return 0
+	if j.CompletedAt.Before(j.StartedAt) {
+		return 0.0
+	}
 	return math.Round(float64(j.CompletedAt.Sub(j.StartedAt).Minutes())*1000) / 1000
 }
 
+// CheckIfSelfHosted checks if a job is running on a self-hosted runner by comparing the labels of the job with the provided labels.
+// It takes a slice of strings representing the labels to check against and returns a boolean value indicating whether the job is running on a self-hosted runner or not.
 func (wj *Job) CheckIfSelfHosted(labels []string) bool {
 	for _, label := range labels {
 		for _, labelInJob := range wj.Labels {
