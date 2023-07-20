@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
 	"github.com/ssulei7/gh-runner-usage-check/internal/actions"
 	"github.com/ssulei7/gh-runner-usage-check/internal/report"
@@ -36,7 +37,9 @@ var reportCmd = &cobra.Command{
 		report.CreateInitialOutputFile(outputType, orgName)
 
 		// Get repositories in the organization
+		spinner, _ := pterm.DefaultSpinner.Start("Getting repositories in organization: " + orgName)
 		repositories := repository.GetOrgRepositories(orgName)
+		spinner.Success("Done!")
 
 		// For each repository, get the workflows and get average of self-hosted minutes
 		for _, repo := range repositories {
@@ -49,7 +52,7 @@ var reportCmd = &cobra.Command{
 				workflow_runs, err := repo.GetWorkflowRunsForWorkflow(workflow)
 				if err != nil {
 					fmt.Println("Error getting workflow runs for workflow: ", workflow)
-					fmt.Println("Continuing..")
+					fmt.Println("Continuing to next workflow...")
 					continue
 				}
 				total := 0.0
