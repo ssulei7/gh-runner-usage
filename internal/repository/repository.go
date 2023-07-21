@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/cli/go-gh"
+	"github.com/pterm/pterm"
 	"github.com/ssulei7/gh-runner-usage-check/internal/actions"
 )
 
@@ -38,7 +39,7 @@ func (r *Repository) GetRepoWorkflows() []string {
 	workflows := workflows_response["workflows"].([]interface{})
 	// Check if workflows is empty
 	if len(workflows) == 0 {
-		fmt.Println("No workflows found for repository: " + r.FullName)
+		pterm.Info.Println("No workflows found for repository: " + r.FullName)
 		return []string{}
 	}
 
@@ -51,11 +52,9 @@ func (r *Repository) GetRepoWorkflows() []string {
 		workflow_paths = append(workflow_paths, workflow_name)
 	}
 
-	// Log workflow_paths
-	fmt.Println("Workflows for repository ", r.FullName, " are: ", workflow_paths)
+	pterm.Println(pterm.Green("Workflows for repository ", r.FullName, " are:") + pterm.Red("\n", workflow_paths))
 
 	return workflow_paths
-
 }
 
 func (r *Repository) GetWorkflowRunsForWorkflow(workflowID string) (actions.WorkflowRuns, error) {
@@ -112,9 +111,8 @@ func GetOrgRepositories(orgName string) Repositories {
 	repositories := Repositories{}
 	currentPage := 1
 	noNextPage := false
-	fmt.Println("Getting repositories for organization: ", orgName)
 	for !noNextPage {
-		response, err := client.Request(http.MethodGet, fmt.Sprintf("orgs/%s/repos?per_page=1000&page=%d", orgName, currentPage), nil)
+		response, err := client.Request(http.MethodGet, fmt.Sprintf("orgs/%s/repos?per_page=100&page=%d", orgName, currentPage), nil)
 		if err != nil {
 			log.Fatal(err)
 		}
