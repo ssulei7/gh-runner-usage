@@ -9,6 +9,15 @@ import (
 
 type JSONRecordArray []map[string]string
 
+func GetOutputFilePath(outputType string, orgName string) string {
+	if outputType == "csv" {
+		return orgName + "-runner-minute-average-report.csv"
+	} else if outputType == "json" {
+		return orgName + "-runner-minute-average-report.json"
+	}
+	return ""
+}
+
 func CreateInitialOutputFile(outputType string, orgName string) {
 	if outputType == "csv" {
 		CreateInitialReportCSVFile(orgName)
