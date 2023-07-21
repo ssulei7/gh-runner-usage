@@ -20,7 +20,7 @@ var reportCmd = &cobra.Command{
 			log.Fatalf("Error getting org name: %v", err)
 		}
 		runnerLabels, err := cmd.Flags().GetStringSlice("runner-labels")
-		fmt.Println("Labels we are searching for in workflows: ", runnerLabels)
+		pterm.DefaultBox.WithTitle(pterm.LightGreen("Runner labels we are searching for")).WithTitleTopCenter().Println(runnerLabels)
 		if err != nil {
 			log.Fatalf("Error getting self-hosted labels: %v", err)
 		}
@@ -42,22 +42,23 @@ var reportCmd = &cobra.Command{
 		spinner.Success("Done!")
 
 		// For each repository, get the workflows and get average of self-hosted minutes
+		progressBar, _ := pterm.DefaultProgressbar.WithTotal(len(repositories)).WithTitle("Calculating workflow run averages in: " + orgName).Start()
+		defer progressBar.Stop()
 		for _, repo := range repositories {
-			fmt.Println("Current repository is: " + repo.FullName)
 			workflows := repo.GetRepoWorkflows()
 			if len(workflows) == 0 {
+				progressBar.Increment()
 				continue
 			}
 			for _, workflow := range workflows {
 				workflow_runs, err := repo.GetWorkflowRunsForWorkflow(workflow)
 				if err != nil {
-					fmt.Println("Error getting workflow runs for workflow: ", workflow)
-					fmt.Println("Continuing to next workflow...")
+					pterm.Warning.Println("Error getting workflow runs for workflow: ", workflow)
 					continue
 				}
 				total := 0.0
 				if workflow_runs.TotalCount == 0 {
-					fmt.Println("No workflow runs found for workflow: ", workflow)
+					pterm.Info.Println("No workflow runs found for workflow: ", workflow)
 					continue
 				}
 
@@ -88,7 +89,7 @@ var reportCmd = &cobra.Command{
 						}
 					}
 					if len(selfHostedJobs) == 0 {
-						fmt.Println("No self-hosted jobs found for workflow run: ", successfulWorkflowRuns.WorkflowRuns[i].ID)
+						fmt.Println("No jobs found containing specified labels for workflow run: ", successfulWorkflowRuns.WorkflowRuns[i].ID)
 						continue
 					}
 					// Get the total self-hosted minutes for the workflow run
@@ -100,7 +101,12 @@ var reportCmd = &cobra.Command{
 				// Write a new record to the output file
 				report.AddRecord(outputType, orgName, repo.FullName, workflow, total/float64(numberOfWorkflowRunsToEvaluate))
 			}
+
+			progressBar.Increment()
 		}
+
+		// Print where output file is located
+		pterm.Success.Println("Report generated successfully! Report is located at: " + report.GetOutputFilePath(outputType, orgName) + "!")
 	},
 }
 
