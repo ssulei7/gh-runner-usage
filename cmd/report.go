@@ -78,7 +78,7 @@ var reportCmd = &cobra.Command{
 					}
 					jobs := repo.GetWorkflowJobRuns(successfulWorkflowRuns.WorkflowRuns[i].ID)
 					if len(jobs.Jobs) == 0 {
-						fmt.Println("No jobs found for workflow run: ", successfulWorkflowRuns.WorkflowRuns[i].ID)
+						pterm.Info.Println("No jobs found for workflow run: ", successfulWorkflowRuns.WorkflowRuns[i].ID)
 						continue
 					}
 					// Filter jobs by self-hosted labels
@@ -89,7 +89,7 @@ var reportCmd = &cobra.Command{
 						}
 					}
 					if len(selfHostedJobs) == 0 {
-						fmt.Println("No jobs found containing specified labels for workflow run: ", successfulWorkflowRuns.WorkflowRuns[i].ID)
+						pterm.Info.Println("No jobs with specified labels found for workflow run: ", successfulWorkflowRuns.WorkflowRuns[i].ID)
 						continue
 					}
 					// Get the total self-hosted minutes for the workflow run
