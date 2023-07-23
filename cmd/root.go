@@ -7,8 +7,8 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "gh-runner-usage-check",
-	Short: "A CLI tool to check the usage of GitHub Actions self-hosted runners",
+	Use:   "gh-runner-usage",
+	Short: "A CLI tool to check the usage of GitHub Actions runners",
 }
 
 func init() {
