@@ -1,11 +1,11 @@
-# gh-runner-usage-check
+# gh-runner-usage
 
 This is a GitHub CLI extension that calculates the average minutes consumed by a workflow run, given a set of labels. It is intended to be used to check the usage of self-hosted runners, but you can also use it to check the usage of GitHub-hosted runners. 
 
 ## Installation
     
 ```sh-session
-$ gh extension install ssulei7/gh-runner-usage-check
+$ gh extension install ssulei7/gh-runner-usage
 ```
 
 ## Usage of the extension
@@ -16,7 +16,7 @@ To use the extension, you can run the following command:
 Generate a report of the usage of GitHub Actions self-hosted runners across an organization
 
 Usage:
-  gh runner-usage-check report [flags]
+  gh runner-usage report [flags]
 
 Flags:
   -h, --help                                help for report
@@ -65,7 +65,7 @@ SullyDevSquad/github-flow-demo,linter.yml,2.57
 ```
 
 ## Contributing
-To contribute to gh-runner-usage-check, follow these steps:
+To contribute to gh-runner-usage, follow these steps:
 
 1. Fork the repository
 2. Create a new branch
