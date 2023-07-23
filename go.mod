@@ -1,4 +1,4 @@
-module github.com/ssulei7/gh-runner-usage-check
+module github.com/ssulei7/gh-runner-usage
 
 go 1.20
 
