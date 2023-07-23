@@ -5,9 +5,9 @@ import (
 
 	"github.com/pterm/pterm"
 	"github.com/spf13/cobra"
-	"github.com/ssulei7/gh-runner-usage-check/internal/actions"
-	"github.com/ssulei7/gh-runner-usage-check/internal/report"
-	"github.com/ssulei7/gh-runner-usage-check/internal/repository"
+	"github.com/ssulei7/gh-runner-usage/internal/actions"
+	"github.com/ssulei7/gh-runner-usage/internal/report"
+	"github.com/ssulei7/gh-runner-usage/internal/repository"
 )
 
 var reportCmd = &cobra.Command{

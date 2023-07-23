@@ -9,7 +9,7 @@ import (
 
 	"github.com/cli/go-gh"
 	"github.com/pterm/pterm"
-	"github.com/ssulei7/gh-runner-usage-check/internal/actions"
+	"github.com/ssulei7/gh-runner-usage/internal/actions"
 )
 
 type Repository struct {
