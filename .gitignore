@@ -1,5 +1,5 @@
-/gh-runner-usage-check
-/gh-runner-usage-check.exe
+/gh-runner-usage
+/gh-runner-usage
 
 # Ignore .vscode
 .vscode
