@@ -82,3 +82,31 @@ func TestAddRecord(t *testing.T) {
 	os.Remove(orgName2 + "-runner-minute-average-report.json")
 
 }
+func TestGetOutputFilePath(t *testing.T) {
+	// Test case 1: csv output type
+	orgName1 := "myorg"
+	outputType1 := "csv"
+	expected1 := orgName1 + "-runner-minute-average-report.csv"
+	result1 := GetOutputFilePath(outputType1, orgName1)
+	if result1 != expected1 {
+		t.Errorf("Test case 1 failed: expected %s but got %s", expected1, result1)
+	}
+
+	// Test case 2: json output type
+	orgName2 := "myorg"
+	outputType2 := "json"
+	expected2 := orgName2 + "-runner-minute-average-report.json"
+	result2 := GetOutputFilePath(outputType2, orgName2)
+	if result2 != expected2 {
+		t.Errorf("Test case 2 failed: expected %s but got %s", expected2, result2)
+	}
+
+	// Test case 3: invalid output type
+	orgName3 := "myorg"
+	outputType3 := "invalid"
+	expected3 := ""
+	result3 := GetOutputFilePath(outputType3, orgName3)
+	if result3 != expected3 {
+		t.Errorf("Test case 3 failed: expected %s but got %s", expected3, result3)
+	}
+}
