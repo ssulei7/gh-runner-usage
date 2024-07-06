@@ -6,6 +6,7 @@ import (
 	"os"
 	"reflect"
 	"strconv"
+	"strings"
 	"testing"
 )
 
@@ -35,8 +36,9 @@ func TestAddRecord(t *testing.T) {
 	outputType1 := "csv"
 	repoName1 := "myrepo"
 	workflowName1 := "myworkflow"
+	labels := []string{"ubuntu-latest", "self-hosted"}
 	averageSelfHostedMinutes1 := 10.0
-	AddRecord(outputType1, orgName1, repoName1, workflowName1, averageSelfHostedMinutes1)
+	AddRecord(outputType1, orgName1, labels, repoName1, workflowName1, averageSelfHostedMinutes1)
 	file1, err1 := os.Open(orgName1 + "-runner-minute-average-report.csv")
 	if err1 != nil {
 		t.Errorf("Test case 1 failed: csv file could not be opened")
@@ -47,7 +49,7 @@ func TestAddRecord(t *testing.T) {
 	if err1 != nil {
 		t.Errorf("Test case 1 failed: csv file could not be read")
 	}
-	expected1 := []string{repoName1, workflowName1, strconv.FormatFloat(averageSelfHostedMinutes1, 'f', 2, 64)}
+	expected1 := []string{repoName1, workflowName1, strings.Join(labels, " "), strconv.FormatFloat(averageSelfHostedMinutes1, 'f', 2, 64)}
 	if !reflect.DeepEqual(records1[1], expected1) {
 		t.Errorf("Test case 1 failed: expected %v but got %v", expected1, records1[1])
 	}
@@ -58,7 +60,7 @@ func TestAddRecord(t *testing.T) {
 	repoName2 := "myrepo"
 	workflowName2 := "myworkflow"
 	averageSelfHostedMinutes2 := 20.0
-	AddRecord(outputType2, orgName2, repoName2, workflowName2, averageSelfHostedMinutes2)
+	AddRecord(outputType2, orgName2, labels, repoName2, workflowName2, averageSelfHostedMinutes2)
 	file2, err2 := os.ReadFile(orgName2 + "-runner-minute-average-report.json")
 	if err2 != nil {
 		t.Errorf("Test case 2 failed: json file could not be opened")
@@ -71,6 +73,7 @@ func TestAddRecord(t *testing.T) {
 	expected2 := map[string]string{
 		"Repository":             repoName2,
 		"Workflow":               workflowName2,
+		"Labels":                 strings.Join(labels, " "),
 		"Average Runner Minutes": strconv.FormatFloat(averageSelfHostedMinutes2, 'f', 2, 64),
 	}
 	if !reflect.DeepEqual(records2[0], expected2) {
