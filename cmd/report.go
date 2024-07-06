@@ -8,6 +8,7 @@ import (
 	"github.com/ssulei7/gh-runner-usage/internal/actions"
 	"github.com/ssulei7/gh-runner-usage/internal/report"
 	"github.com/ssulei7/gh-runner-usage/internal/repository"
+	"github.com/ssulei7/gh-runner-usage/internal/util"
 )
 
 var reportCmd = &cobra.Command{
@@ -70,6 +71,8 @@ var reportCmd = &cobra.Command{
 					}
 				}
 
+				labels := []string{}
+
 				// Loop based on number of
 				for i := 0; i < numberOfWorkflowRunsToEvaluate; i++ {
 					if i >= successfulWorkflowRuns.TotalCount {
@@ -85,6 +88,7 @@ var reportCmd = &cobra.Command{
 					for _, job := range jobs.Jobs {
 						if job.CheckIfSelfHosted(runnerLabels) {
 							selfHostedJobs = append(selfHostedJobs, job)
+							labels = append(labels, job.Labels...)
 						}
 					}
 					if len(selfHostedJobs) == 0 {
@@ -98,7 +102,10 @@ var reportCmd = &cobra.Command{
 				}
 
 				// Write a new record to the output file
-				report.AddRecord(outputType, orgName, repo.FullName, workflow, total/float64(numberOfWorkflowRunsToEvaluate))
+				//remove any duplicate values from labels
+				// Remove duplicate values from labels
+				uniqueLabels := util.RemoveDuplicates(labels)
+				report.AddRecord(outputType, orgName, uniqueLabels, repo.FullName, workflow, total/float64(numberOfWorkflowRunsToEvaluate))
 			}
 
 			progressBar.Increment()

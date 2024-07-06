@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"os"
 	"strconv"
+	"strings"
 )
 
 type JSONRecordArray []map[string]string
@@ -38,7 +39,7 @@ func CreateInitialReportCSVFile(orgName string) {
 	writer := csv.NewWriter(file)
 
 	// Write headers to the csv file
-	headers := []string{"Repository", "Workflow", "Average Runner Minutes"}
+	headers := []string{"Repository", "Workflow", "Labels", "Average Runner Minutes"}
 	err = writer.Write(headers)
 	if err != nil {
 		panic(err)
@@ -61,15 +62,15 @@ func CreateInitialJSONFile(orgName string) {
 	file.WriteString("[\n]")
 }
 
-func AddRecord(outputType string, orgName string, repoName string, workflowName string, averageSelfHostedMinutes float64) {
+func AddRecord(outputType string, orgName string, labels []string, repoName string, workflowName string, averageSelfHostedMinutes float64) {
 	if outputType == "csv" {
-		AddRecordToCSVFile(orgName, repoName, workflowName, averageSelfHostedMinutes)
+		AddRecordToCSVFile(orgName, repoName, labels, workflowName, averageSelfHostedMinutes)
 	} else if outputType == "json" {
-		AddRecordToJSONFile(orgName, repoName, workflowName, averageSelfHostedMinutes)
+		AddRecordToJSONFile(orgName, repoName, labels, workflowName, averageSelfHostedMinutes)
 	}
 }
 
-func AddRecordToCSVFile(orgName string, repoName string, workflowName string, averageSelfHostedMinutes float64) {
+func AddRecordToCSVFile(orgName string, repoName string, labels []string, workflowName string, averageSelfHostedMinutes float64) {
 	// Open the csv file
 	file, err := os.OpenFile(orgName+"-runner-minute-average-report.csv", os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 	if err != nil {
@@ -81,7 +82,7 @@ func AddRecordToCSVFile(orgName string, repoName string, workflowName string, av
 	writer := csv.NewWriter(file)
 
 	// Write the record to the csv file
-	record := []string{repoName, workflowName, strconv.FormatFloat(averageSelfHostedMinutes, 'f', 2, 64)}
+	record := []string{repoName, workflowName, strings.Join(labels, " "), strconv.FormatFloat(averageSelfHostedMinutes, 'f', 2, 64)}
 	err = writer.Write(record)
 	if err != nil {
 		panic(err)
@@ -91,7 +92,7 @@ func AddRecordToCSVFile(orgName string, repoName string, workflowName string, av
 	writer.Flush()
 }
 
-func AddRecordToJSONFile(orgName string, repoName string, workflowName string, averageSelfHostedMinutes float64) {
+func AddRecordToJSONFile(orgName string, repoName string, labels []string, workflowName string, averageSelfHostedMinutes float64) {
 	// Load JSON file as an array of struct
 	var records JSONRecordArray
 
@@ -111,6 +112,7 @@ func AddRecordToJSONFile(orgName string, repoName string, workflowName string, a
 	record := map[string]string{
 		"Repository":             repoName,
 		"Workflow":               workflowName,
+		"Labels":                 strings.Join(labels, " "),
 		"Average Runner Minutes": strconv.FormatFloat(averageSelfHostedMinutes, 'f', 2, 64),
 	}
 
