@@ -105,7 +105,9 @@ var reportCmd = &cobra.Command{
 				//remove any duplicate values from labels
 				// Remove duplicate values from labels
 				uniqueLabels := util.RemoveDuplicates(labels)
-				report.AddRecord(outputType, orgName, uniqueLabels, repo.FullName, workflow, total/float64(numberOfWorkflowRunsToEvaluate))
+				if len(uniqueLabels) > 0 {
+					report.AddRecord(outputType, orgName, uniqueLabels, repo.FullName, workflow, total/float64(numberOfWorkflowRunsToEvaluate))
+				}
 			}
 
 			progressBar.Increment()
